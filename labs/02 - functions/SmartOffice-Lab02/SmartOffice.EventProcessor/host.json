@@ -1,0 +1,13 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
+    "CosmosDbEndpointUri": "https://cdb3522h00.documents.azure.com:443",
+    "CosmosDbAccessKey": "IliGp1QgXzhh9ge8tKlhdq6d5B08sHSK2dGBoRFyEyEVhcEpY7raC6Q0AMoHnZylil2gwgfV0J45acXKUvxBIg==",
+    "CosmosDbDatabaseName": "smartOffice",
+    "CosmosDbCollectionName": "rooms",
+    "SomeSettings": "123",
+    "EventHubConnectionString": "Endpoint=sb://eh3522h00.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=Zo3jCJ3SO6EB8vYHR0GHbRYH2H3N52Itl5pbV7pw/3I="
+  }
+}
