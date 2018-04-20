@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>  
+<RunSettings>  
+  <!-- Parameters used by tests at runtime -->  
+  <TestRunParameters>
+    <Parameter name="oauth_client_id" value="" />
+    <Parameter name="oauth_client_scopes" value="" />
+    <Parameter name="oauth_key" value="" />
+    <Parameter name="oauth_token_endpoint" value="/core/connect/token" />
+    <Parameter name="known_good_user_id" value="" />
+    <Parameter name="known_good_user_password" value="" />
+    <Parameter name="known_good_user_system_id" value="" />
+    <Parameter name="baseUri" value="http://localhost:41781" />
+  </TestRunParameters>      
+</RunSettings>  

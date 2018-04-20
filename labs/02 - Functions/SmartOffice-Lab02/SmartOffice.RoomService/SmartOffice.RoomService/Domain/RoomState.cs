@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartOffice.EventProcessor.Models
-{
+namespace Neudesic.SmartOffice.RoomService.Domain {
     public enum RoomState
     {
-        Unknown=0,
+        Unoccupied=0,
         Occupied = 1,
-        Unoccupied = 2
+        Unknown = 2
     }
 }

@@ -4,22 +4,21 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Azure.WebJobs.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using SmartOffice.EventProcessor.Models;
 using System;
-using System.Linq;
-using Microsoft.Azure.Documents;
-using Microsoft.Azure.Documents.Client;
-using Microsoft.Azure.Documents.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Serialization;
-using System.IO;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 
-namespace SmartOffice.EventProcessor
-{
+namespace SmartOffice.EventProcessor {
     public static class EventReader
     {
+        private const string CONTENT_TYPE_FORMAT_STRING = "application/vnd.room+json";
+
         private static DocumentClient _client;
         private static Uri _collectionUri;
         private static string _collectionName;
@@ -39,9 +38,7 @@ namespace SmartOffice.EventProcessor
             string databaseName = Environment.GetEnvironmentVariable("CosmosDbDatabaseName", EnvironmentVariableTarget.Process);
             string collectionName = Environment.GetEnvironmentVariable("CosmosDbCollectionName", EnvironmentVariableTarget.Process);
 
-            _client = new DocumentClient(new Uri(serviceUri), accessKey, new Newtonsoft.Json.JsonSerializerSettings {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            });
+            _client = new DocumentClient(new Uri(serviceUri), accessKey, CreateDefaultSerializationSettings());
             _collectionUri = UriFactory.CreateDocumentCollectionUri(databaseName, collectionName);
             _databaseName = databaseName;
             _collectionName = collectionName;
@@ -63,13 +60,16 @@ namespace SmartOffice.EventProcessor
 
                     string deviceId = bodyAsJsonObject.deviceId;
                     string deviceName = bodyAsJsonObject.deviceName;
-                    RoomState mappedState = RoomState.Unknown;
 
-                    _stateMap.TryGetValue(bodyAsJsonObject.value.ToString(), out mappedState);
+                    if(!deviceName.ToUpperInvariant().Contains("SENSOR")) {
+                        RoomState mappedState = RoomState.Unknown;
 
-                    var room = await GetOrCreateRoom(deviceId, deviceName);
+                        _stateMap.TryGetValue(bodyAsJsonObject.value.ToString(), out mappedState);
 
-                    await SetRoomState(room, mappedState, message.EnqueuedTimeUtc);
+                        var room = await GetOrCreateRoom(deviceId, deviceName);
+
+                        await SetRoomState(room, mappedState, message.EnqueuedTimeUtc);
+                    }                    
                 }
             }
         }
@@ -114,16 +114,35 @@ namespace SmartOffice.EventProcessor
         }
 
         private static async Task<Room> SetRoomState(Room room,RoomState newState, DateTime stateChangeTime) {
-            
-            var documentUri = UriFactory.CreateDocumentUri(_databaseName, _collectionName, room.Id);
-
+                        
             room.State = newState;
             room.StateChangeTimestamp = stateChangeTime;
 
-            await _client.ReplaceDocumentAsync(documentUri, room);
+            try {
+
+                var result = await _client.UpsertDocumentAsync(_collectionUri, room);
+
+                Debug.WriteLine($"{room.DisplayName} changed to {room.State}");
+
+
+                Console.WriteLine(result.StatusCode);
+            }
+            catch(Exception e) {
+                Console.WriteLine(e);
+            }
 
             return room;            
 
+        }
+        private static JsonSerializerSettings CreateDefaultSerializationSettings() {
+            JsonSerializerSettings settings = new JsonSerializerSettings {
+                Formatting = Newtonsoft.Json.Formatting.Indented,
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.None,
+                DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc,
+            };
+            settings.Converters.Add(new CoreMetadataJsonConverter(typeof(Room), CONTENT_TYPE_FORMAT_STRING, "1.0.0"));
+            return settings;
         }
     }
 }

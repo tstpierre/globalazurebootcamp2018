@@ -1,0 +1,45 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "productName": {
+      "value": "qua"
+    },
+    "serviceName": {
+      "value": "smartoffice.roomservice"
+    },
+    "serviceSize": {
+      "value": "l"
+    },
+    "instrumentationProvider": {
+      "value": ""
+    },
+    "environment": {
+      "value": "development"
+    },
+    "region": {
+      "value": "West US"
+    },
+    "globalLogStorageSasUrl": {
+      "value": ""
+    },
+    "hostingPlanNameOverride": {
+      "value": ""
+    },
+    "defaultSkuOverride": {
+      "value": ""
+    },
+    "minimumInstanceCountOverride": {
+      "value": 0
+    },
+    "maximumInstanceCountOverride": {
+      "value": 0
+    },
+    "platformDocumentCollectionKey": {
+      "value": ""
+    },
+    "eventPublicationTopic": {
+      "value": "smartoffice.roomservice"
+    }
+  }
+}
