@@ -1,0 +1,18 @@
+<mat-list role="list">
+    <mat-list-item role="listItem" *ngFor="let room of rooms">
+        <button mat-raised-button style="width:100%" (click)="onRoomSelected(room)">
+            <span [ngSwitch]="room.state">
+                <span matTooltip="Unknown" matTooltipPosition="above" *ngSwitchCase="0" style="height: 48px;">
+                    <mat-icon>help</mat-icon>
+                </span>
+                <span matTooltip="Occupied" matTooltipPosition="above" *ngSwitchCase="1" style="height: 48px;">
+                    <mat-icon class="occupied">remove_circle</mat-icon>
+                </span>
+                <span matTooltip="Unoccupied" matTooltipPosition="above" *ngSwitchCase="2" style="height: 48px;">
+                    <mat-icon class="unoccupied">remove_circle</mat-icon>
+                </span>
+            </span>
+            <span class="room-name" style="height: 48px;">{{ room.displayName }}</span>
+        </button>
+    </mat-list-item>
+</mat-list>

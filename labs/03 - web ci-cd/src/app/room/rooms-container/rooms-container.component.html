@@ -1,0 +1,8 @@
+<mat-grid-list cols="5" rowHeight="500px">
+    <mat-grid-tile colspan="2">
+        <room-list [rooms]="rooms" (selectedEvent)="onRoomSelected($event)"></room-list>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="3">
+        <room-detail [roomDetail]="selectedRoomDetail"></room-detail>
+    </mat-grid-tile>
+</mat-grid-list>

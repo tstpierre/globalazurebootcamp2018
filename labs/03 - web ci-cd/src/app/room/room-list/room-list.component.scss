@@ -1,0 +1,17 @@
+@import '../room';
+
+button {
+    display: inline-flex;
+    vertical-align: middle;
+
+    span {
+        &.room-name {
+            padding-top: 4px;
+            padding-left: 10px;
+        }
+
+        mat-icon {
+            vertical-align: middle;
+        }
+    }
+}

@@ -1,0 +1,10 @@
+mat-icon {
+    &.occupied {
+        color: red;
+    }
+
+    &.unoccupied {
+        color: green;
+        transform: rotate(90deg);
+    }
+}
