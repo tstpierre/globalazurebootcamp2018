@@ -56,6 +56,14 @@
 1. Select `Save & Queue`
 1. Look at the build summary and artifacts (the zip file is attached)
 
+### If you own the repo (GitHub security)
+Caveat, this whole process works best using VSTS GIT repos, as there is no OAuth and external permission hiccups to wire it all up seamlessly.
+
+1. Edit the build definition
+1. Select `Triggers` tab
+1. Check `Enable continuous integration` and `Batch changes while a build is in progress`
+1. Save the build definition
+
 ## VSTS Release
 1. From the Summary tab of the successful build, select `Create release` in the Deployments section
 1. Select `Apply` on the `Azure App Service Deployment` template
@@ -72,8 +80,8 @@
 1. Once deployment is finished, visit your web app URL and claim victory!
 
 ## Putting it all together
-1. By default, the triggers are made for you
-1. When you push changes to GitHub fork/repo a build will kick off
+1. The release trigger is made for you when you create it off of the successful build page like we did
+1. When you push changes to GitHub fork/repo a build will kick off (if you owned the repo and had rights to enable trigger)
 1. When the build finishes (successfully) a new release will be created for that build
 1. That release will automatically deploy to your Azure Web App resource
 1. This is a starting point for things like dev, qa and stage environments where builds can be tested and approved before moving to the next environment, without requiring a new build process
