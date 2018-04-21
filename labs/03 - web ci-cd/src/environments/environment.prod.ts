@@ -4,6 +4,6 @@ export const environment = {
     queryInterval: 5000,
 
     apis: {
-        roomBaseUrl: 'YOUR_URL_HERE'
+        roomBaseUrl: 'https://apigateway3522h00.azure-api.net/room'
     }
 };
